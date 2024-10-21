@@ -15,12 +15,14 @@ const server = app.listen(process.env.PORT || 8000, () => {
   console.log(`Server is running on port ${process.env.PORT || 8000}`);
 });
 
-const io = new Server(server, {
+const io = new Server(process.env.PORT || 8000, {
   cors: {
-    origin: "https://react-video-chat-rtc.vercel.app", // Adjusted
-    methods: ["GET", "POST"]
+    origin: "https://react-video-chat-rtc.vercel.app/", // Your frontend URL
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type"],
   },
 });
+
 
 // Socket.IO event handling
 io.on("connection", (socket) => {
