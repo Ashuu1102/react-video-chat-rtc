@@ -1,32 +1,23 @@
-const express = require("express");
 const { Server } = require("socket.io");
 const cors = require("cors");
+const express = require("express");
 
 const app = express();
-app.use(cors());
-app.use(express.json()); // Middleware to parse JSON
+const PORT = process.env.PORT || 8000;
 
-// Define a simple status endpoint
-app.get('/api/status', (req, res) => {
-  res.json({ message: "Server is running" });
-});
-
-const server = app.listen(process.env.PORT || 8000, () => {
-  console.log(`Server is running on port ${process.env.PORT || 8000}`);
-});
-
-const io = new Server(process.env.PORT || 8000, {
+// Set up CORS
+const io = new Server(PORT, {
   cors: {
-    origin: "https://react-video-chat-rtc.vercel.app/", // Your frontend URL
+    origin: "https://react-video-chat-rtc.vercel.app", // Your frontend URL
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type"],
   },
 });
 
-
-// Socket.IO event handling
+// Socket connection handling
 io.on("connection", (socket) => {
-  console.log(`Socket Connected`, socket.id);
+  console.log(`Socket Connected: ${socket.id}`);
+
   socket.on("room:join", (data) => {
     const { email, room } = data;
     emailToSocketIdMap.set(email, socket.id);
@@ -53,4 +44,14 @@ io.on("connection", (socket) => {
     console.log("peer:nego:done", ans);
     io.to(to).emit("peer:nego:final", { from: socket.id, ans });
   });
+
+  // Optional: handle socket disconnection
+  socket.on("disconnect", () => {
+    console.log(`Socket Disconnected: ${socket.id}`);
+  });
+});
+
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
