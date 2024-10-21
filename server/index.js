@@ -1,18 +1,30 @@
+const express = require("express");
 const { Server } = require("socket.io");
-const cors = require("cors"); 
-const io = new Server(process.env.PORT || 8000, {
+const cors = require("cors");
+
+const app = express();
+app.use(cors());
+app.use(express.json()); // Middleware to parse JSON
+
+// Define a simple status endpoint
+app.get('/api/status', (req, res) => {
+  res.json({ message: "Server is running" });
+});
+
+const server = app.listen(process.env.PORT || 8000, () => {
+  console.log(`Server is running on port ${process.env.PORT || 8000}`);
+});
+
+const io = new Server(server, {
   cors: {
-    origin: "https://react-video-chat-rtc.vercel.app/", 
+    origin: "https://react-video-chat-rtc.vercel.app", // Adjusted
     methods: ["GET", "POST"]
   },
 });
 
-const emailToSocketIdMap = new Map();
-const socketidToEmailMap = new Map();
-
+// Socket.IO event handling
 io.on("connection", (socket) => {
   console.log(`Socket Connected`, socket.id);
-
   socket.on("room:join", (data) => {
     const { email, room } = data;
     emailToSocketIdMap.set(email, socket.id);
