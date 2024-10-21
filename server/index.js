@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 8000;
 // Set up CORS
 const io = new Server(PORT, {
   cors: {
-    origin: "https://react-video-chat-rtc.vercel.app", // Your frontend URL
+    origin: "https://react-video-chat-rtc.vercel.app/", // Your frontend URL
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type"],
   },
