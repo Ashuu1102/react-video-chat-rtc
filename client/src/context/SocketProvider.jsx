@@ -11,7 +11,7 @@ export const useSocket = () => {
 export const SocketProvider = (props) => {
     // Determine the socket server URL based on the environment
     const socketUrl = process.env.NODE_ENV === 'production'
-        ? 'https://react-video-chat-rtc.onrender.com' // Change this to your actual production URL
+        ? 'https://react-video-chat-rtc-1.onrender.com' // Change this to your actual production URL
         : 'http://localhost:8000'; // Development URL
 
     const socket = useMemo(() => io(socketUrl), [socketUrl]);
