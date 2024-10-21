@@ -1,7 +1,10 @@
 const { Server } = require("socket.io");
-
-const io = new Server(8000, {
-  cors: true,
+const cors = require("cors"); 
+const io = new Server(process.env.PORT || 8000, {
+  cors: {
+    origin: "https://react-video-chat-rtc.vercel.app/", 
+    methods: ["GET", "POST"]
+  },
 });
 
 const emailToSocketIdMap = new Map();
@@ -9,6 +12,7 @@ const socketidToEmailMap = new Map();
 
 io.on("connection", (socket) => {
   console.log(`Socket Connected`, socket.id);
+
   socket.on("room:join", (data) => {
     const { email, room } = data;
     emailToSocketIdMap.set(email, socket.id);
@@ -19,7 +23,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("user:call", ({ to, offer }) => {
-    io.to(to).emit("incomming:call", { from: socket.id, offer });
+    io.to(to).emit("incoming:call", { from: socket.id, offer });
   });
 
   socket.on("call:accepted", ({ to, ans }) => {
