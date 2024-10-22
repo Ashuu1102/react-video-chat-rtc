@@ -1,5 +1,6 @@
 import React, { createContext, useMemo, useContext } from 'react';
 import { io } from 'socket.io-client';
+import axios from 'axios'
 
 const SocketContext = createContext(null);
 
@@ -15,6 +16,7 @@ export const SocketProvider = (props) => {
         : 'http://localhost:8000'; // Development URL
 
     const socket = useMemo(() => io(socketUrl), [socketUrl]);
+    axios.defaults.withCredentials = true
 
     return (
         <SocketContext.Provider value={socket}>
