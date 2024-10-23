@@ -1,6 +1,6 @@
 const { Server } = require("socket.io");
 
-const io = new Server('https://react-video-chat-rtc-ocv8.vercel.app/', {
+const io = new Server(8000 || 'https://react-video-chat-rtc-ocv8.vercel.app/', {
   cors: true,
 });
 

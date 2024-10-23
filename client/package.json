@@ -39,5 +39,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://react-video-chat-rtc-ocv8.vercel.app/"
+  "proxy": "https://localhost:8000"
 }
