@@ -12,7 +12,7 @@ export const useSocket = () => {
 export const SocketProvider = (props) => {
     // Determine the socket server URL based on the environment
     const socketUrl = process.env.NODE_ENV === 'production'
-        ? 'react-video-chat-rtc-ocv8.vercel.app' // Change this to your actual production URL
+        ? 'https://react-video-chat-rtc.vercel.app/' // Change this to your actual production URL
         : 'http://localhost:8000'; // Development URL
 
     const socket = useMemo(() => io(socketUrl), [socketUrl]);
